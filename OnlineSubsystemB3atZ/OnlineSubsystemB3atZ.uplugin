@@ -1,0 +1,21 @@
+{
+	"FileVersion" : 3,
+	
+	"FriendlyName" : "Online Subsystem B3atZ",
+	"Version" : 1,
+	"VersionName" : "1.0",
+	"EngineVersion" : "4.2.0",
+	"Description" : "Shared code for interacting online subsystem implementations.",
+	"Category" : "Online Platform",
+	"CreatedBy" : "Philipp Bürki",
+	"CreatedByURL" : "http://epicgames.com",
+	"EnabledByDefault" : false,
+
+    "Modules": [
+        {
+            "Name": "OnlineSubsystemB3atZ",
+            "Type": "Runtime",
+            "LoadingPhase" : "PostConfigInit"
+        }
+    ]
+}
