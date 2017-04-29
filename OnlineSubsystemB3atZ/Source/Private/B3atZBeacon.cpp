@@ -428,13 +428,13 @@ bool FB3atZSession::Search(FNboSerializeToBuffer& Packet, FOnValidResponsePacket
 	return bSuccess;
 }
 
-/** Stops the LAN beacon from accepting broadcasts */
+/** Stops the B3atZ beacon from accepting broadcasts */
 void FB3atZSession::StopB3atZSession()
 {
 	// Don't poll anymore since we are shutting it down
 	B3atZBeaconState = EB3atZBeaconState::NotUsingB3atZBeacon;
 
-	// Unbind the LAN beacon object
+	// Unbind the B3atZ beacon object
 	if (B3atZBeacon)
 	{	
 		delete B3atZBeacon;

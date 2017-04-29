@@ -72,7 +72,7 @@ public:
 	FB3atZBeacon();
 
 	/** Frees the broadcast socket */
-	~FB3atZBeacon();
+	virtual ~FB3atZBeacon();
 
 	/** Return true if there is a valid ListenSocket */
 	bool IsListenSocketValid() const;
@@ -195,7 +195,7 @@ public:
 	/** The amount of time to wait before timing out query request */
 	float B3atZQueryTimeout;
 
-	/** LAN beacon for packet broadcast */
+	/** B3atZ beacon for packet broadcast */
 	class FB3atZBeacon* B3atZBeacon;
 
 	/** State of the LAN beacon */
