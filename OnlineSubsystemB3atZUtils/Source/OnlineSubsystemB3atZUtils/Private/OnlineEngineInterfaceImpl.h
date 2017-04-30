@@ -115,7 +115,7 @@ public:
 
 	virtual void DumpSessionState(UWorld* World) override;
 	virtual void DumpVoiceState(UWorld* World) override;
-	virtual void DumpChatState(UWorld* World) override;
+	//virtual void DumpChatState(UWorld* World) override;
 
 #if WITH_EDITOR
 	/**

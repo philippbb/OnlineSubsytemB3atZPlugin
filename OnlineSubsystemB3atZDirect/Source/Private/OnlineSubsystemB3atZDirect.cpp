@@ -50,7 +50,7 @@ IOnlineLeaderboardsPtr FOnlineSubsystemB3atZDirect::GetLeaderboardsInterface() c
 	return LeaderboardsInterface;
 }
 
-IB3atZOnlineVoicePtr FOnlineSubsystemB3atZDirect::GetVoiceInterface() const
+IOnlineB3atZVoicePtr FOnlineSubsystemB3atZDirect::GetB3atZVoiceInterface() const
 {
 	if (VoiceInterface.IsValid() && !bVoiceInterfaceInitialized)
 	{	
@@ -150,6 +150,7 @@ bool FOnlineSubsystemB3atZDirect::Tick(float DeltaTime)
 	
 	if (VoiceInterface.IsValid() && bVoiceInterfaceInitialized)
 	{
+		UE_LOG(LogB3atZOnline, VeryVerbose, TEXT("OSSD Tick VoiceInterface valid and initialized "));
 		VoiceInterface->Tick(DeltaTime);
 	}
 
@@ -162,6 +163,8 @@ bool FOnlineSubsystemB3atZDirect::Init()
 	
 	if (bDirectInit)
 	{
+		UE_LOG(LogB3atZOnline, VeryVerbose, TEXT("OSD Init"));
+
 		// Create the online async task thread
 		OnlineAsyncTaskThreadRunnable = new FOnlineAsyncTaskManagerDirect(this);
 		check(OnlineAsyncTaskThreadRunnable);
@@ -173,7 +176,7 @@ bool FOnlineSubsystemB3atZDirect::Init()
 		LeaderboardsInterface = MakeShareable(new FOnlineLeaderboardsDirect(this));
 		IdentityInterface = MakeShareable(new FOnlineIdentityDirect(this));
 		AchievementsInterface = MakeShareable(new FOnlineAchievementsDirect(this));
-		//VoiceInterface = MakeShareable(new FOnlineVoiceImplDirect(this));
+		VoiceInterface = MakeShareable(new FOnlineB3atZVoiceImpl(this));
 
 		UE_LOG(LogB3atZOnline, VeryVerbose, TEXT("OSD Init"));
 	}
@@ -217,7 +220,7 @@ bool FOnlineSubsystemB3atZDirect::Shutdown()
  	}
  
  	// Destruct the interfaces
-	//DESTRUCT_INTERFACE(VoiceInterface);
+	DESTRUCT_INTERFACE(VoiceInterface);
 	DESTRUCT_INTERFACE(AchievementsInterface);
 	DESTRUCT_INTERFACE(IdentityInterface);
 	DESTRUCT_INTERFACE(LeaderboardsInterface);

@@ -16,21 +16,23 @@
 /** Largest size to attempt to transmit */
 #define MAX_VOICE_PACKET_SIZE_IMPL 1 * 1024
 
-FB3atZOnlineVoiceImpl::FB3atZOnlineVoiceImpl(IOnlineSubsystemB3atZ* InOnlineSubsystem) :
+FOnlineB3atZVoiceImpl::FOnlineB3atZVoiceImpl(IOnlineSubsystemB3atZ* InOnlineSubsystem) :
 	OnlineSubsystem(InOnlineSubsystem),
 	VoiceEngine(NULL)
 {
 }
 
-FB3atZOnlineVoiceImpl::~FB3atZOnlineVoiceImpl()
+FOnlineB3atZVoiceImpl::~FOnlineB3atZVoiceImpl()
 {
 	LocalTalkers.Empty();
 	RemoteTalkers.Empty();
 	VoiceEngine = NULL;
 }
 
-bool FB3atZOnlineVoiceImpl::Init()
+bool FOnlineB3atZVoiceImpl::Init()
 {
+	UE_LOG(LogVoice, Log, TEXT("VoiceInterfaceImpl Init"));
+
 	bool bSuccess = false;
 
 	if (!GConfig->GetInt(TEXT("OnlineSubsystemB3atZ"),TEXT("MaxLocalTalkers"), MaxLocalTalkers, GEngineIni))
@@ -52,8 +54,11 @@ bool FB3atZOnlineVoiceImpl::Init()
 	bool bHasVoiceEnabled = false;
 	if (GConfig->GetBool(TEXT("OnlineSubsystemB3atZ"), TEXT("bHasVoiceEnabled"), bHasVoiceEnabled, GEngineIni) && bHasVoiceEnabled)
 	{
+		UE_LOG(LogVoice, Log, TEXT("VoiceInterfaceImpl Init Get HasVoiceEnabled"));
 		if (OnlineSubsystem)
 		{
+			UE_LOG(LogVoice, Log, TEXT("VoiceInterfaceImpl Init OSS valid"));
+
 			SessionInt = OnlineSubsystem->GetSessionInterface().Get();
 			IdentityInt = OnlineSubsystem->GetIdentityInterface().Get();
 			bSuccess = SessionInt && IdentityInt;
@@ -61,6 +66,8 @@ bool FB3atZOnlineVoiceImpl::Init()
 
 		if (bSuccess)
 		{
+			UE_LOG(LogVoice, Log, TEXT("VoiceInterfaceImpl init bSuccess"));
+
 			const bool bVoiceEngineForceDisable = OnlineSubsystem->IsDedicated() || GIsBuildMachine;
 			if (!bVoiceEngineForceDisable)
 			{
@@ -95,7 +102,7 @@ bool FB3atZOnlineVoiceImpl::Init()
 	return bSuccess;
 }
 
-void FB3atZOnlineVoiceImpl::Shutdown()
+void FOnlineB3atZVoiceImpl::Shutdown()
 {
 	VoiceData.RemotePackets.Empty();
 
@@ -107,7 +114,7 @@ void FB3atZOnlineVoiceImpl::Shutdown()
 	IdentityInt = nullptr;
 }
 
-void FB3atZOnlineVoiceImpl::ClearVoicePackets()
+void FOnlineB3atZVoiceImpl::ClearVoicePackets()
 {
 	for (uint32 Index = 0; Index < MAX_SPLITSCREEN_TALKERS; Index++)
 	{
@@ -120,20 +127,23 @@ void FB3atZOnlineVoiceImpl::ClearVoicePackets()
 	}
 }
 
-void FB3atZOnlineVoiceImpl::Tick(float DeltaTime) 
+void FOnlineB3atZVoiceImpl::Tick(float DeltaTime) 
 {
+
+
 	if (!OnlineSubsystem->IsDedicated())
 	{
 		//SCOPE_CYCLE_COUNTER(STAT_Voice_Interface);
-
+		
 		// If we aren't in a networked match, no need to update networked voice
 		if (SessionInt && SessionInt->GetNumSessions() > 0)
 		{
 			// Processing voice data only valid with a voice engine to capture/play
 			if (VoiceEngine.IsValid())
 			{
+			
 				VoiceEngine->Tick(DeltaTime);
-
+			
 				// Queue local packets for sending via the network
 				ProcessLocalVoicePackets();
 				// Submit queued packets to audio system
@@ -141,11 +151,12 @@ void FB3atZOnlineVoiceImpl::Tick(float DeltaTime)
 				// Fire off any talking notifications for hud display
 				ProcessTalkingDelegates(DeltaTime);
 			}
+			
 		}
 	}
 }
 
-void FB3atZOnlineVoiceImpl::StartNetworkedVoice(uint8 LocalUserNum)
+void FOnlineB3atZVoiceImpl::StartNetworkedVoice(uint8 LocalUserNum)
 {
 	// Validate the range of the entry
 	if (LocalUserNum >= 0 && LocalUserNum < MaxLocalTalkers)
@@ -165,7 +176,7 @@ void FB3atZOnlineVoiceImpl::StartNetworkedVoice(uint8 LocalUserNum)
 	}
 }
 
-void FB3atZOnlineVoiceImpl::StopNetworkedVoice(uint8 LocalUserNum)
+void FOnlineB3atZVoiceImpl::StopNetworkedVoice(uint8 LocalUserNum)
 {
 	// Validate the range of the entry
 	if (LocalUserNum >= 0 && LocalUserNum < MaxLocalTalkers)
@@ -185,7 +196,7 @@ void FB3atZOnlineVoiceImpl::StopNetworkedVoice(uint8 LocalUserNum)
 	}
 }
 
-bool FB3atZOnlineVoiceImpl::RegisterLocalTalker(uint32 LocalUserNum) 
+bool FOnlineB3atZVoiceImpl::RegisterLocalTalker(uint32 LocalUserNum) 
 {
 	uint32 Return = E_FAIL;
 	if (LocalUserNum >= 0 && LocalUserNum < (uint32)MaxLocalTalkers)
@@ -235,7 +246,7 @@ bool FB3atZOnlineVoiceImpl::RegisterLocalTalker(uint32 LocalUserNum)
 	return Return == S_OK;
 }
 
-void FB3atZOnlineVoiceImpl::RegisterLocalTalkers()
+void FOnlineB3atZVoiceImpl::RegisterLocalTalkers()
 {
 	UE_LOG(LogVoice, Log, TEXT("Registering all local talkers"));
 	// Loop through the 4 available players and register them
@@ -246,7 +257,7 @@ void FB3atZOnlineVoiceImpl::RegisterLocalTalkers()
 	}
 }
 
-bool FB3atZOnlineVoiceImpl::UnregisterLocalTalker(uint32 LocalUserNum) 
+bool FOnlineB3atZVoiceImpl::UnregisterLocalTalker(uint32 LocalUserNum) 
 {
 	uint32 Return = S_OK;
 	if (LocalUserNum >= 0 && LocalUserNum < (uint32)MaxLocalTalkers)
@@ -288,7 +299,7 @@ bool FB3atZOnlineVoiceImpl::UnregisterLocalTalker(uint32 LocalUserNum)
 	return Return == S_OK;
 }
 
-void FB3atZOnlineVoiceImpl::UnregisterLocalTalkers()
+void FOnlineB3atZVoiceImpl::UnregisterLocalTalkers()
 {
 	UE_LOG(LogVoice, Log, TEXT("Unregistering all local talkers"));
 	// Loop through the 4 available players and unregister them
@@ -299,7 +310,7 @@ void FB3atZOnlineVoiceImpl::UnregisterLocalTalkers()
 	}
 }
 
-bool FB3atZOnlineVoiceImpl::RegisterRemoteTalker(const FUniqueNetId& UniqueId) 
+bool FOnlineB3atZVoiceImpl::RegisterRemoteTalker(const FUniqueNetId& UniqueId) 
 {
 	uint32 Return = E_FAIL;
 	if (OnlineSubsystem)
@@ -340,7 +351,7 @@ bool FB3atZOnlineVoiceImpl::RegisterRemoteTalker(const FUniqueNetId& UniqueId)
 	return Return == S_OK;
 }
 
-bool FB3atZOnlineVoiceImpl::UnregisterRemoteTalker(const FUniqueNetId& UniqueId) 
+bool FOnlineB3atZVoiceImpl::UnregisterRemoteTalker(const FUniqueNetId& UniqueId) 
 {
 	uint32 Return = E_FAIL;
 	if (OnlineSubsystem)
@@ -383,7 +394,7 @@ bool FB3atZOnlineVoiceImpl::UnregisterRemoteTalker(const FUniqueNetId& UniqueId)
 	return Return == S_OK;
 }
 
-void FB3atZOnlineVoiceImpl::RemoveAllRemoteTalkers()
+void FOnlineB3atZVoiceImpl::RemoveAllRemoteTalkers()
 {
 	UE_LOG(LogVoice, Log, TEXT("Removing all remote talkers"));
 	if (VoiceEngine.IsValid())
@@ -407,7 +418,7 @@ void FB3atZOnlineVoiceImpl::RemoveAllRemoteTalkers()
 	RemoteTalkers.Empty(MaxRemoteTalkers);
 }
 
-FRemoteTalker* FB3atZOnlineVoiceImpl::FindRemoteTalker(const FUniqueNetId& UniqueId)
+FRemoteTalker* FOnlineB3atZVoiceImpl::FindRemoteTalker(const FUniqueNetId& UniqueId)
 {
 	for (int32 Index = 0; Index < RemoteTalkers.Num(); Index++)
 	{
@@ -421,22 +432,22 @@ FRemoteTalker* FB3atZOnlineVoiceImpl::FindRemoteTalker(const FUniqueNetId& Uniqu
 	return NULL;
 }
 
-bool FB3atZOnlineVoiceImpl::IsHeadsetPresent(uint32 LocalUserNum) 
+bool FOnlineB3atZVoiceImpl::IsHeadsetPresent(uint32 LocalUserNum) 
 {
 	return VoiceEngine.IsValid() && VoiceEngine->IsHeadsetPresent(LocalUserNum);
 }
 
-bool FB3atZOnlineVoiceImpl::IsLocalPlayerTalking(uint32 LocalUserNum) 
+bool FOnlineB3atZVoiceImpl::IsLocalPlayerTalking(uint32 LocalUserNum) 
 {
 	return VoiceEngine.IsValid() && VoiceEngine->IsLocalPlayerTalking(LocalUserNum);
 }
 
-bool FB3atZOnlineVoiceImpl::IsRemotePlayerTalking(const FUniqueNetId& UniqueId) 
+bool FOnlineB3atZVoiceImpl::IsRemotePlayerTalking(const FUniqueNetId& UniqueId) 
 {
 	return VoiceEngine.IsValid() && VoiceEngine->IsRemotePlayerTalking(UniqueId);
 }
 
-bool FB3atZOnlineVoiceImpl::IsMuted(uint32 LocalUserNum, const FUniqueNetId& UniqueId) const
+bool FOnlineB3atZVoiceImpl::IsMuted(uint32 LocalUserNum, const FUniqueNetId& UniqueId) const
 {
 	if (LocalUserNum >= 0 && LocalUserNum < (uint32)MaxLocalTalkers)
 	{
@@ -446,19 +457,19 @@ bool FB3atZOnlineVoiceImpl::IsMuted(uint32 LocalUserNum, const FUniqueNetId& Uni
 	return false;
 }
 
-bool FB3atZOnlineVoiceImpl::IsLocallyMuted(const FUniqueNetId& UniqueId) const
+bool FOnlineB3atZVoiceImpl::IsLocallyMuted(const FUniqueNetId& UniqueId) const
 {
 	int32 Index = MuteList.Find((const FB3atZUniqueNetIdString&)UniqueId);
 	return Index != INDEX_NONE;
 }
 
-bool FB3atZOnlineVoiceImpl::IsSystemWideMuted(const FUniqueNetId& UniqueId) const
+bool FOnlineB3atZVoiceImpl::IsSystemWideMuted(const FUniqueNetId& UniqueId) const
 {
 	int32 Index = SystemMuteList.Find((const FB3atZUniqueNetIdString&)UniqueId);
 	return Index != INDEX_NONE;
 }
 
-bool FB3atZOnlineVoiceImpl::MuteRemoteTalker(uint8 LocalUserNum, const FUniqueNetId& PlayerId, bool bIsSystemWide)
+bool FOnlineB3atZVoiceImpl::MuteRemoteTalker(uint8 LocalUserNum, const FUniqueNetId& PlayerId, bool bIsSystemWide)
 {
 	uint32 Return = E_FAIL;
 	if (LocalUserNum >= 0 && LocalUserNum < MaxLocalTalkers )
@@ -500,7 +511,7 @@ bool FB3atZOnlineVoiceImpl::MuteRemoteTalker(uint8 LocalUserNum, const FUniqueNe
 	return Return == S_OK;
 }
 
-bool FB3atZOnlineVoiceImpl::UnmuteRemoteTalker(uint8 LocalUserNum, const FUniqueNetId& PlayerId, bool bIsSystemWide)
+bool FOnlineB3atZVoiceImpl::UnmuteRemoteTalker(uint8 LocalUserNum, const FUniqueNetId& PlayerId, bool bIsSystemWide)
 {
 	uint32 Return = E_FAIL;
 	if (LocalUserNum >= 0 && LocalUserNum < MaxLocalTalkers )
@@ -547,7 +558,7 @@ bool FB3atZOnlineVoiceImpl::UnmuteRemoteTalker(uint8 LocalUserNum, const FUnique
 	return Return == S_OK;
 }
 
-void FB3atZOnlineVoiceImpl::ProcessMuteChangeNotification()
+void FOnlineB3atZVoiceImpl::ProcessMuteChangeNotification()
 {
 	// Nothing to update if there isn't an active session
 	if (VoiceEngine.IsValid())
@@ -575,7 +586,7 @@ void FB3atZOnlineVoiceImpl::ProcessMuteChangeNotification()
 	}
 }
 
-void FB3atZOnlineVoiceImpl::UpdateMuteListForLocalTalker(int32 TalkerIndex, APlayerController* PlayerController)
+void FOnlineB3atZVoiceImpl::UpdateMuteListForLocalTalker(int32 TalkerIndex, APlayerController* PlayerController)
 {
 	// For each registered remote talker
 	for (int32 RemoteIndex = 0; RemoteIndex < RemoteTalkers.Num(); RemoteIndex++)
@@ -601,7 +612,7 @@ void FB3atZOnlineVoiceImpl::UpdateMuteListForLocalTalker(int32 TalkerIndex, APla
 	}
 }
 
-TSharedPtr<FVoicePacket> FB3atZOnlineVoiceImpl::SerializeRemotePacket(FArchive& Ar)
+TSharedPtr<FVoicePacket> FOnlineB3atZVoiceImpl::SerializeRemotePacket(FArchive& Ar)
 {
 	TSharedPtr<FVoicePacketImpl> NewPacket = MakeShareable(new FVoicePacketImpl());
 	NewPacket->Serialize(Ar);
@@ -622,7 +633,7 @@ TSharedPtr<FVoicePacket> FB3atZOnlineVoiceImpl::SerializeRemotePacket(FArchive& 
 	return NULL;
 }
 
-TSharedPtr<FVoicePacket> FB3atZOnlineVoiceImpl::GetLocalPacket(uint32 LocalUserNum)
+TSharedPtr<FVoicePacket> FOnlineB3atZVoiceImpl::GetLocalPacket(uint32 LocalUserNum)
 {
 	// duplicate the local copy of the data and set it on a shared pointer for destruction elsewhere
 	if (LocalUserNum >= 0 && LocalUserNum < MAX_SPLITSCREEN_TALKERS)
@@ -637,7 +648,7 @@ TSharedPtr<FVoicePacket> FB3atZOnlineVoiceImpl::GetLocalPacket(uint32 LocalUserN
 	return NULL;
 }
 
-void FB3atZOnlineVoiceImpl::ProcessTalkingDelegates(float DeltaTime)
+void FOnlineB3atZVoiceImpl::ProcessTalkingDelegates(float DeltaTime)
 {
 	// Fire off any talker notification delegates for local talkers
 	for (int32 LocalUserNum = 0; LocalUserNum < LocalTalkers.Num(); LocalUserNum++)
@@ -710,7 +721,7 @@ void FB3atZOnlineVoiceImpl::ProcessTalkingDelegates(float DeltaTime)
 	}
 }
 
-void FB3atZOnlineVoiceImpl::ProcessLocalVoicePackets()
+void FOnlineB3atZVoiceImpl::ProcessLocalVoicePackets()
 {
 	if (VoiceEngine.IsValid())
 	{
@@ -777,7 +788,7 @@ void FB3atZOnlineVoiceImpl::ProcessLocalVoicePackets()
 	}
 }
 
-void FB3atZOnlineVoiceImpl::ProcessRemoteVoicePackets()
+void FOnlineB3atZVoiceImpl::ProcessRemoteVoicePackets()
 {
 	// Clear the talking state for remote players
 	for (int32 Index = 0; Index < RemoteTalkers.Num(); Index++)
@@ -825,7 +836,7 @@ void FB3atZOnlineVoiceImpl::ProcessRemoteVoicePackets()
 	VoiceData.RemotePackets.Reset();
 }
 
-FString FB3atZOnlineVoiceImpl::GetVoiceDebugState() const
+FString FOnlineB3atZVoiceImpl::GetVoiceDebugState() const
 {
 	TSharedPtr<const FUniqueNetId> UniqueId;
 

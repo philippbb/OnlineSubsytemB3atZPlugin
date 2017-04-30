@@ -10,7 +10,7 @@ class FOnlineAchievementsDirect;
 class FOnlineIdentityDirect;
 class FOnlineLeaderboardsDirect;
 class FOnlineSessionDirect;
-class FB3atZOnlineVoiceImpl;
+class FOnlineB3atZVoiceImpl;
 
 /** Forward declarations of all interface classes */
 typedef TSharedPtr<class FOnlineSessionDirect, ESPMode::ThreadSafe> FOnlineSessionDirectPtr;
@@ -18,7 +18,7 @@ typedef TSharedPtr<class FOnlineProfileDirect, ESPMode::ThreadSafe> FOnlineProfi
 typedef TSharedPtr<class FOnlineFriendsDirect, ESPMode::ThreadSafe> FOnlineFriendsDirectPtr;
 typedef TSharedPtr<class FOnlineUserCloudDirect, ESPMode::ThreadSafe> FOnlineUserCloudDirectPtr;
 typedef TSharedPtr<class FOnlineLeaderboardsDirect, ESPMode::ThreadSafe> FOnlineLeaderboardsDirectPtr;
-typedef TSharedPtr<class FB3atZOnlineVoiceImpl, ESPMode::ThreadSafe> FB3atZOnlineVoiceImplPtr;
+typedef TSharedPtr<class FOnlineB3atZVoiceImpl, ESPMode::ThreadSafe> FOnlineB3atZVoiceImplPtr;
 typedef TSharedPtr<class FOnlineExternalUIDirect, ESPMode::ThreadSafe> FOnlineExternalUIDirectPtr;
 typedef TSharedPtr<class FOnlineIdentityDirect, ESPMode::ThreadSafe> FOnlineIdentityDirectPtr;
 typedef TSharedPtr<class FOnlineAchievementsDirect, ESPMode::ThreadSafe> FOnlineAchievementsDirectPtr;
@@ -46,7 +46,7 @@ public:
 	virtual IOnlineUserCloudPtr GetUserCloudInterface() const override;
 	virtual IOnlineEntitlementsPtr GetEntitlementsInterface() const override;
 	virtual IOnlineLeaderboardsPtr GetLeaderboardsInterface() const override;
-	virtual IB3atZOnlineVoicePtr GetVoiceInterface() const override;
+	virtual IOnlineB3atZVoicePtr GetB3atZVoiceInterface() const override;
 	virtual IOnlineExternalUIPtr GetExternalUIInterface() const override;	
 	virtual IOnlineTimePtr GetTimeInterface() const override;
 	virtual IOnlineIdentityPtr GetIdentityInterface() const override;
@@ -86,8 +86,8 @@ PACKAGE_SCOPE:
 	FOnlineSubsystemB3atZDirect(FName InInstanceName) :
 		FOnlineSubsystemB3atZImpl(InInstanceName),
 		SessionInterface(nullptr),
-		//VoiceInterface(nullptr),
-		//bVoiceInterfaceInitialized(false),
+		VoiceInterface(nullptr),
+		bVoiceInterfaceInitialized(false),
 		LeaderboardsInterface(nullptr),
 		IdentityInterface(nullptr),
 		AchievementsInterface(nullptr),
@@ -112,7 +112,7 @@ private:
 	FOnlineSessionDirectPtr SessionInterface;
 
 	/** Interface for voice communication */
-	mutable FB3atZOnlineVoiceImplPtr VoiceInterface;
+	mutable FOnlineB3atZVoiceImplPtr VoiceInterface;
 
 	/** Interface for voice communication */
 	mutable bool bVoiceInterfaceInitialized;

@@ -37,7 +37,7 @@ class IOnlineTitleFile;
 class IOnlineTurnBased;
 class IOnlineUser;
 class IOnlineUserCloud;
-class IB3atZOnlineVoice;
+class IOnlineB3atZVoice;
 
 ONLINESUBSYSTEMB3ATZ_API DECLARE_LOG_CATEGORY_EXTERN(LogB3atZOnline, Display, All);
 ONLINESUBSYSTEMB3ATZ_API DECLARE_LOG_CATEGORY_EXTERN(LogB3atZOnlineGame, Display, All);
@@ -70,7 +70,7 @@ typedef TSharedPtr<class IOnlineSharedCloud, ESPMode::ThreadSafe> IOnlineSharedC
 typedef TSharedPtr<class IOnlineUserCloud, ESPMode::ThreadSafe> IOnlineUserCloudPtr;
 typedef TSharedPtr<class IOnlineEntitlements, ESPMode::ThreadSafe> IOnlineEntitlementsPtr;
 typedef TSharedPtr<class IOnlineLeaderboards, ESPMode::ThreadSafe> IOnlineLeaderboardsPtr;
-typedef TSharedPtr<class IB3atZOnlineVoice, ESPMode::ThreadSafe> IB3atZOnlineVoicePtr;
+typedef TSharedPtr<class IOnlineB3atZVoice, ESPMode::ThreadSafe> IOnlineB3atZVoicePtr;
 typedef TSharedPtr<class IOnlineExternalUI, ESPMode::ThreadSafe> IOnlineExternalUIPtr;
 typedef TSharedPtr<class IOnlineTime, ESPMode::ThreadSafe> IOnlineTimePtr;
 typedef TSharedPtr<class IOnlineIdentity, ESPMode::ThreadSafe> IOnlineIdentityPtr;
@@ -312,7 +312,7 @@ public:
 	 * Get the interface for accessing voice related data
 	 * @return Interface pointer for the appropriate voice service
 	 */
-	virtual IB3atZOnlineVoicePtr GetVoiceInterface() const = 0;
+	virtual IOnlineB3atZVoicePtr GetB3atZVoiceInterface() const = 0;
 
 	/** 
 	 * Get the interface for accessing the external UIs of a service

@@ -82,7 +82,7 @@ namespace Online
 	 * @param SubsystemName - Name of the requested online service
 	 * @return Interface pointer for the appropriate voice service
 	 */
-	//IMPLEMENT_GET_INTERFACE(Voice);
+	IMPLEMENT_GET_INTERFACE(B3atZVoice);
 
 	/** 
 	 * Get the interface for accessing the external UIs of a service

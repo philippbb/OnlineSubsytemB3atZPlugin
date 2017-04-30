@@ -114,6 +114,8 @@ bool FVoiceEngineImpl::Init(int32 MaxLocalTalkers, int32 MaxRemoteTalkers)
 {
 	bool bSuccess = false;
 
+	UE_LOG(LogVoice, Warning, TEXT("Voice capture init"));
+
 	if (!OnlineSubsystem->IsDedicated())
 	{
 		FVoiceModule& VoiceModule = FVoiceModule::Get();

@@ -335,80 +335,80 @@ bool UB3atZOnlineEngineInterfaceImpl::GetResolvedConnectString(UWorld* World, FN
 
 TSharedPtr<FVoicePacket> UB3atZOnlineEngineInterfaceImpl::GetLocalPacket(UWorld* World, uint8 LocalUserNum)
 {
-	/*IB3atZOnlineVoicePtr VoiceInt = Online::GetVoiceInterface(World);
+	IOnlineB3atZVoicePtr VoiceInt = Online::GetB3atZVoiceInterface(World);
 	if (VoiceInt.IsValid())
 	{
 		TSharedPtr<FVoicePacket> LocalPacket = VoiceInt->GetLocalPacket(LocalUserNum);
 		return LocalPacket;
-	}*/
+	}
 
 	return nullptr;
 }
 
 TSharedPtr<FVoicePacket> UB3atZOnlineEngineInterfaceImpl::SerializeRemotePacket(UWorld* World, FArchive& Ar)
 {
-	/*IB3atZOnlineVoicePtr VoiceInt = Online::GetVoiceInterface(World);
+	IOnlineB3atZVoicePtr VoiceInt = Online::GetB3atZVoiceInterface(World);
 	if (VoiceInt.IsValid())
 	{
 		return VoiceInt->SerializeRemotePacket(Ar);
-	}*/
+	}
 	return nullptr;
 }
 
 void UB3atZOnlineEngineInterfaceImpl::StartNetworkedVoice(UWorld* World, uint8 LocalUserNum)
 {
-	//IB3atZOnlineVoicePtr VoiceInt = Online::GetVoiceInterface(World);
-	//if (VoiceInt.IsValid())
-	//{
-	//	VoiceInt->StartNetworkedVoice(LocalUserNum);
-	//}
+	IOnlineB3atZVoicePtr VoiceInt = Online::GetB3atZVoiceInterface(World);
+	if (VoiceInt.IsValid())
+	{
+		VoiceInt->StartNetworkedVoice(LocalUserNum);
+	}
 }
 
 void UB3atZOnlineEngineInterfaceImpl::StopNetworkedVoice(UWorld* World, uint8 LocalUserNum)
 {
-	//IB3atZOnlineVoicePtr VoiceInt = Online::GetVoiceInterface(World);
-	//if (VoiceInt.IsValid())
-	//{
-	//	VoiceInt->StopNetworkedVoice(LocalUserNum);
-	//}
+	IOnlineB3atZVoicePtr VoiceInt = Online::GetB3atZVoiceInterface(World);
+	if (VoiceInt.IsValid())
+	{
+		VoiceInt->StopNetworkedVoice(LocalUserNum);
+	}
 }
 
 void UB3atZOnlineEngineInterfaceImpl::ClearVoicePackets(UWorld* World)
 {
-	//IB3atZOnlineVoicePtr VoiceInt = Online::GetVoiceInterface(World);
-	//if (VoiceInt.IsValid())
-	//{
-	//	VoiceInt->ClearVoicePackets();
-	//}
+	IOnlineB3atZVoicePtr VoiceInt = Online::GetB3atZVoiceInterface(World);
+	if (VoiceInt.IsValid())
+	{
+		VoiceInt->ClearVoicePackets();
+	}
 }
 
 bool UB3atZOnlineEngineInterfaceImpl::MuteRemoteTalker(UWorld* World, uint8 LocalUserNum, const FUniqueNetId& PlayerId, bool bIsSystemWide)
 {
-	/*IB3atZOnlineVoicePtr VoiceInt = Online::GetVoiceInterface(World);
+	IOnlineB3atZVoicePtr VoiceInt = Online::GetB3atZVoiceInterface(World);
 	if (VoiceInt.IsValid())
 	{
 		return VoiceInt->MuteRemoteTalker(LocalUserNum, PlayerId, bIsSystemWide);
-	}*/
+	}
 	return false;
 }
 
 bool UB3atZOnlineEngineInterfaceImpl::UnmuteRemoteTalker(UWorld* World, uint8 LocalUserNum, const FUniqueNetId& PlayerId, bool bIsSystemWide)
 {
-	//IB3atZOnlineVoicePtr VoiceInt = Online::GetVoiceInterface(World);
-	//if (VoiceInt.IsValid())
-	//{
-	//	return VoiceInt->UnmuteRemoteTalker(LocalUserNum, PlayerId, bIsSystemWide);
-	//}
+	IOnlineB3atZVoicePtr VoiceInt = Online::GetB3atZVoiceInterface(World);
+	if (VoiceInt.IsValid())
+	{
+		return VoiceInt->UnmuteRemoteTalker(LocalUserNum, PlayerId, bIsSystemWide);
+	}
 	return false;
 }
 
 int32 UB3atZOnlineEngineInterfaceImpl::GetNumLocalTalkers(UWorld* World)
 {
-	//IB3atZOnlineVoicePtr VoiceInt = Online::GetVoiceInterface(World);
-	//if (VoiceInt.IsValid())
-	//{
-	//	return VoiceInt->GetNumLocalTalkers();
-	//}
+	IOnlineB3atZVoicePtr VoiceInt = Online::GetB3atZVoiceInterface(World);
+	if (VoiceInt.IsValid())
+	{
+		return VoiceInt->GetNumLocalTalkers();
+	}
 
 	return 0;
 }
@@ -481,21 +481,21 @@ void UB3atZOnlineEngineInterfaceImpl::DumpSessionState(UWorld* World)
 
 void UB3atZOnlineEngineInterfaceImpl::DumpVoiceState(UWorld* World)
 {
-	/*IB3atZOnlineVoicePtr VoiceInt = Online::GetVoiceInterface(World);
+	IOnlineB3atZVoicePtr VoiceInt = Online::GetB3atZVoiceInterface(World);
 	if (VoiceInt.IsValid())
 	{
 		UE_LOG(LogB3atZOnline, Verbose, TEXT("\n%s"), *VoiceInt->GetVoiceDebugState());
-	}*/
+	}
 }
 
-void UB3atZOnlineEngineInterfaceImpl::DumpChatState(UWorld* World)
-{
-	//IB3atZOnlineChatPtr ChatInt = Online::GetChatInterface(World);
-	//if (ChatInt.IsValid())
-	//{
-	//	ChatInt->DumpChatState();
-	//}
-}
+//void UB3atZOnlineEngineInterfaceImpl::DumpChatState(UWorld* World)
+//{
+//	IB3atZOnlineChatPtr ChatInt = Online::GetChatInterface(World);
+//	if (ChatInt.IsValid())
+//	{
+//		ChatInt->DumpChatState();
+//	}
+//}
 
 #if WITH_EDITOR
 bool UB3atZOnlineEngineInterfaceImpl::SupportsOnlinePIE()

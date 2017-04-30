@@ -892,7 +892,7 @@ void FOnlineSessionDirect::RegisterLocalPlayers(FNamedOnlineSession* Session)
 {
 	if (!DirectSubsystem->IsDedicated())
 	{
-		IB3atZOnlineVoicePtr VoiceInt = DirectSubsystem->GetVoiceInterface();
+		IOnlineB3atZVoicePtr VoiceInt = DirectSubsystem->GetB3atZVoiceInterface();
 		if (VoiceInt.IsValid())
 		{
 			for (int32 Index = 0; Index < MAX_LOCAL_PLAYERS; Index++)
@@ -906,7 +906,7 @@ void FOnlineSessionDirect::RegisterLocalPlayers(FNamedOnlineSession* Session)
 
 void FOnlineSessionDirect::RegisterVoice(const FUniqueNetId& PlayerId)
 {
-	IB3atZOnlineVoicePtr VoiceInt = DirectSubsystem->GetVoiceInterface();
+	IOnlineB3atZVoicePtr VoiceInt = DirectSubsystem->GetB3atZVoiceInterface();
 	if (VoiceInt.IsValid())
 	{
 		if (!DirectSubsystem->IsLocalPlayer(PlayerId))
@@ -923,7 +923,7 @@ void FOnlineSessionDirect::RegisterVoice(const FUniqueNetId& PlayerId)
 
 void FOnlineSessionDirect::UnregisterVoice(const FUniqueNetId& PlayerId)
 {
-	IB3atZOnlineVoicePtr VoiceInt = DirectSubsystem->GetVoiceInterface();
+	IOnlineB3atZVoicePtr VoiceInt = DirectSubsystem->GetB3atZVoiceInterface();
 	if (VoiceInt.IsValid())
 	{
 		if (!DirectSubsystem->IsLocalPlayer(PlayerId))

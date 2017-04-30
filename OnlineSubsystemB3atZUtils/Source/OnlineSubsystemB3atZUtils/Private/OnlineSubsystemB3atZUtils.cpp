@@ -197,17 +197,17 @@ bool HandleVoiceCommands(UWorld* InWorld, const TCHAR* Cmd, FOutputDevice& Ar)
 
 		FString VoiceDump;
 
-	/*	bool bVoiceInterface = false;
-		IB3atZOnlineVoicePtr VoiceInt = Online::GetVoiceInterface(InWorld);
+		bool bVoiceInterface = false;
+		IOnlineB3atZVoicePtr VoiceInt = Online::GetB3atZVoiceInterface(InWorld);
 		if (VoiceInt.IsValid())
 		{
 			bVoiceInterface = true;
 			VoiceDump = VoiceInt->GetVoiceDebugState();
-		}*/
+		}
 
 		UE_LOG(LogVoice, Display, TEXT("Voice Module Available: %s"), bVoiceModule ? TEXT("true") : TEXT("false"));
 		UE_LOG(LogVoice, Display, TEXT("Voice Module Enabled: %s"), bVoiceModuleEnabled ? TEXT("true") : TEXT("false"));
-		//UE_LOG(LogVoice, Display, TEXT("Voice Interface Available: %s"), bVoiceInterface ? TEXT("true") : TEXT("false"));
+		UE_LOG(LogVoice, Display, TEXT("Voice Interface Available: %s"), bVoiceInterface ? TEXT("true") : TEXT("false"));
 		UE_LOG(LogVoice, Display, TEXT("Voice Interface Enabled: %s"), bHasVoiceInterfaceEnabled ? TEXT("true") : TEXT("false"));
 		UE_LOG(LogVoice, Display, TEXT("Ducking Opt Out Enabled: %s"), bDuckingOptOut ? TEXT("true") : TEXT("false"));
 		UE_LOG(LogVoice, Display, TEXT("Max Local Talkers: %d"), MaxLocalTalkers);
@@ -224,10 +224,10 @@ bool HandleVoiceCommands(UWorld* InWorld, const TCHAR* Cmd, FOutputDevice& Ar)
 	}
 	else
 	{
-		/*IB3atZOnlineVoicePtr VoiceInt = Online::GetVoiceInterface(InWorld);
+		IOnlineB3atZVoicePtr VoiceInt = Online::GetB3atZVoiceInterface(InWorld);
 		if (VoiceInt.IsValid())
 		{
-		}*/
+		}
 	}
 
 	return bWasHandled;
@@ -479,6 +479,8 @@ static bool OnlineExec( UWorld* InWorld, const TCHAR* Cmd, FOutputDevice& Ar )
 				}
 				else if (FParse::Command(&Cmd, TEXT("SESSION")))
 				{
+					UE_LOG(LogB3atZOnline, VeryVerbose, TEXT("OSBU before handlesessioncommands"));
+
 					bWasHandled = HandleSessionCommands(InWorld, Cmd, Ar);
 				}
 				else if (FParse::Command(&Cmd, TEXT("VOICE")))

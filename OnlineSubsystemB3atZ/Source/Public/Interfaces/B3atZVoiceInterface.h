@@ -209,10 +209,10 @@ typedef TSharedPtr<IVoiceEngine, ESPMode::ThreadSafe> IVoiceEnginePtr;
  * This interface is an abstract mechanism for managing voice data. 
  * Each platform implements a specific version of this interface. 
  */
-class IB3atZOnlineVoice
+class IOnlineB3atZVoice
 {
 protected:
-	IB3atZOnlineVoice() {};
+	IOnlineB3atZVoice() {};
 
 	/**
 	 * Initialize the voice interface
@@ -228,7 +228,7 @@ PACKAGE_SCOPE:
 
 public:
 	/** Virtual destructor to force proper child cleanup */
-	virtual ~IB3atZOnlineVoice() {}
+	virtual ~IOnlineB3atZVoice() {}
 
 	/**
 	 * Tells the voice layer that networked processing of the voice data is allowed
@@ -405,7 +405,7 @@ public:
 	virtual FString GetVoiceDebugState() const = 0;
 };
 
-typedef TSharedPtr<IB3atZOnlineVoice, ESPMode::ThreadSafe> IB3atZOnlineVoicePtr;
+typedef TSharedPtr<IOnlineB3atZVoice, ESPMode::ThreadSafe> IOnlineB3atZVoicePtr;
 
 /**
  * Definition of a local player's talking state

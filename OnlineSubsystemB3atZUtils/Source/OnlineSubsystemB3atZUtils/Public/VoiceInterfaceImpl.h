@@ -13,7 +13,7 @@
  * The generic implementation of the voice interface 
  */
 
-class ONLINESUBSYSTEMB3ATZUTILS_API FB3atZOnlineVoiceImpl : public IB3atZOnlineVoice
+class ONLINESUBSYSTEMB3ATZUTILS_API FOnlineB3atZVoiceImpl : public IOnlineB3atZVoice
 {
 	/** Reference to the main online subsystem */
 	class IOnlineSubsystemB3atZ* OnlineSubsystem;
@@ -73,7 +73,7 @@ class ONLINESUBSYSTEMB3ATZUTILS_API FB3atZOnlineVoiceImpl : public IB3atZOnlineV
 
 PACKAGE_SCOPE:
 
-	FB3atZOnlineVoiceImpl() :
+	FOnlineB3atZVoiceImpl() :
 		OnlineSubsystem(NULL),
 		SessionInt(NULL),
 		IdentityInt(NULL),
@@ -83,7 +83,7 @@ PACKAGE_SCOPE:
 		VoiceNotificationDelta(0.0f)
 	{};
 
-	// IB3atZOnlineVoice
+	// IOnlineB3atZVoice
 	virtual bool Init() override;
 	void ProcessMuteChangeNotification() override;
 
@@ -120,12 +120,12 @@ PACKAGE_SCOPE:
 public:
 
 	/** Constructor */
-	FB3atZOnlineVoiceImpl(class IOnlineSubsystemB3atZ* InOnlineSubsystem);
+	FOnlineB3atZVoiceImpl(class IOnlineSubsystemB3atZ* InOnlineSubsystem);
 
 	/** Virtual destructor to force proper child cleanup */
-	virtual ~FB3atZOnlineVoiceImpl();
+	virtual ~FOnlineB3atZVoiceImpl();
 
-	// IB3atZOnlineVoice
+	// IOnlineB3atZVoice
 	virtual void StartNetworkedVoice(uint8 LocalUserNum) override;
 	virtual void StopNetworkedVoice(uint8 LocalUserNum) override;
     virtual bool RegisterLocalTalker(uint32 LocalUserNum) override;
@@ -149,4 +149,4 @@ public:
 	virtual FString GetVoiceDebugState() const override;
 };
 
-typedef TSharedPtr<FB3atZOnlineVoiceImpl, ESPMode::ThreadSafe> FB3atZOnlineVoiceImplPtr;
+typedef TSharedPtr<FOnlineB3atZVoiceImpl, ESPMode::ThreadSafe> FOnlineB3atZVoiceImplPtr;
