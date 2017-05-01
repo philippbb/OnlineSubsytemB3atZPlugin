@@ -104,7 +104,7 @@ private:
 	 * @param Packet the writer object that will encode the data
 	 * @param SessionSettings the session settings to add to the packet
 	 */
-	void AppendSessionSettingsToPacket(class FNboSerializeToBufferDirect& Packet, FOnlineSessionSettingsBeatZ* SessionSettings);
+	void AppendSessionSettingsToPacket(class FNboSerializeToBufferDirect& Packet, FOnlineSessionSettings* SessionSettings);
 
 	/**
 	 * Reads the settings data from the packet and applies it to the
@@ -122,7 +122,7 @@ private:
 	 * @param Packet the reader object that will read the data
 	 * @param SessionSettings the session settings to copy the data to
 	 */
-	void ReadSettingsFromPacket(class FNboSerializeFromBufferDirect& Packet, FOnlineSessionSettingsBeatZ& SessionSettings);
+	void ReadSettingsFromPacket(class FNboSerializeFromBufferDirect& Packet, FOnlineSessionSettings& SessionSettings);
 
 	/**
 	 * Delegate triggered when the LAN beacon has detected a valid client request has been received
@@ -189,7 +189,7 @@ PACKAGE_SCOPE:
 	void Tick(float DeltaTime);
 
 	// IOnlineSession
-	class FNamedOnlineSession* AddNamedSession(FName SessionName, const FOnlineSessionSettingsBeatZ& SessionSettings) override
+	class FNamedOnlineSession* AddNamedSession(FName SessionName, const FOnlineSessionSettings& SessionSettings) override
 	{
 		FScopeLock ScopeLock(&SessionLock);
 		return new (Sessions) FNamedOnlineSession(SessionName, SessionSettings);
@@ -288,14 +288,14 @@ public:
 	}
 
 	// IOnlineSession
-	virtual bool CreateSession(int32 HostingPlayerNum, FName SessionName, const FOnlineSessionSettingsBeatZ& NewSessionSettings) override;
-	virtual bool CreateSession(const FUniqueNetId& HostingPlayerId, FName SessionName, const FOnlineSessionSettingsBeatZ& NewSessionSettings) override;
+	virtual bool CreateSession(int32 HostingPlayerNum, FName SessionName, const FOnlineSessionSettings& NewSessionSettings) override;
+	virtual bool CreateSession(const FUniqueNetId& HostingPlayerId, FName SessionName, const FOnlineSessionSettings& NewSessionSettings) override;
 	virtual bool StartSession(FName SessionName) override;
-	virtual bool UpdateSession(FName SessionName, FOnlineSessionSettingsBeatZ& UpdatedSessionSettings, bool bShouldRefreshOnlineData = true) override;
+	virtual bool UpdateSession(FName SessionName, FOnlineSessionSettings& UpdatedSessionSettings, bool bShouldRefreshOnlineData = true) override;
 	virtual bool EndSession(FName SessionName) override;
 	virtual bool DestroySession(FName SessionName, const FOnDestroySessionCompleteDelegate& CompletionDelegate = FOnDestroySessionCompleteDelegate()) override;
 	virtual bool IsPlayerInSession(FName SessionName, const FUniqueNetId& UniqueId) override;
-	virtual bool StartMatchmaking(const TArray< TSharedRef<const FUniqueNetId> >& LocalPlayers, FName SessionName, const FOnlineSessionSettingsBeatZ& NewSessionSettings, TSharedRef<FOnlineSessionSearchB3atZ>& SearchSettings) override;
+	virtual bool StartMatchmaking(const TArray< TSharedRef<const FUniqueNetId> >& LocalPlayers, FName SessionName, const FOnlineSessionSettings& NewSessionSettings, TSharedRef<FOnlineSessionSearchB3atZ>& SearchSettings) override;
 	virtual bool CancelMatchmaking(int32 SearchingPlayerNum, FName SessionName) override;
 	virtual bool CancelMatchmaking(const FUniqueNetId& SearchingPlayerId, FName SessionName) override;
 	virtual bool FindSessions(int32 SearchingPlayerNum, const TSharedRef<FOnlineSessionSearchB3atZ>& SearchSettings) override;
@@ -313,7 +313,7 @@ public:
 	virtual bool SendSessionInviteToFriends(const FUniqueNetId& LocalUserId, FName SessionName, const TArray< TSharedRef<const FUniqueNetId> >& Friends) override;
 	virtual bool GetResolvedConnectString(FName SessionName, FString& ConnectInfo) override;
 	virtual bool GetResolvedConnectString(const class FOnlineSessionSearchResult& SearchResult, FName PortType, FString& ConnectInfo) override;
-	virtual FOnlineSessionSettingsBeatZ* GetSessionSettings(FName SessionName) override;
+	virtual FOnlineSessionSettings* GetSessionSettings(FName SessionName) override;
 	virtual bool RegisterPlayer(FName SessionName, const FUniqueNetId& PlayerId, bool bWasInvited) override;
 	virtual bool RegisterPlayers(FName SessionName, const TArray< TSharedRef<const FUniqueNetId> >& Players, bool bWasInvited = false) override;
 	virtual bool UnregisterPlayer(FName SessionName, const FUniqueNetId& PlayerId) override;

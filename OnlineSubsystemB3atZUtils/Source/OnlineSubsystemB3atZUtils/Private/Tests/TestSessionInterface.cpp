@@ -13,10 +13,10 @@
 /**
  *	Example of a hosted session
  */
-class TestOnlineGameSettings : public FOnlineSessionSettingsBeatZ
+class TestOnlineGameSettings : public FOnlineSessionSettings
 {
  public:
- 	TestOnlineGameSettings(bool bTestingLAN = false, bool bTestingPresence = false, const FOnlineSessionSettingsBeatZ& SettingsOverride = FOnlineSessionSettingsBeatZ())
+ 	TestOnlineGameSettings(bool bTestingLAN = false, bool bTestingPresence = false, const FOnlineSessionSettings& SettingsOverride = FOnlineSessionSettings())
 	{
  		NumPublicConnections = 10;
 		NumPrivateConnections = 0;
@@ -84,7 +84,7 @@ class TestOnlineGameSettings : public FOnlineSessionSettingsBeatZ
 class TestOnlineSearchSettings : public FOnlineSessionSearchB3atZ
 {
 public:
-	TestOnlineSearchSettings(bool bSearchingLAN = false, bool bSearchingPresence = false, const FOnlineSessionSettingsBeatZ& SettingsOverride = FOnlineSessionSettingsBeatZ())
+	TestOnlineSearchSettings(bool bSearchingLAN = false, bool bSearchingPresence = false, const FOnlineSessionSettings& SettingsOverride = FOnlineSessionSettings())
 	{
 		bIsLanQuery = bSearchingLAN;
 		MaxSearchResults = 10;
@@ -119,7 +119,7 @@ public:
 	}
 };
 
-void FTestSessionInterface::Test(UWorld* InWorld, bool bTestLAN, bool bIsPresence, bool bIsMatchmaking, const FOnlineSessionSettingsBeatZ& SettingsOverride)
+void FTestSessionInterface::Test(UWorld* InWorld, bool bTestLAN, bool bIsPresence, bool bIsMatchmaking, const FOnlineSessionSettings& SettingsOverride)
 {
 	IOnlineSubsystemB3atZ* OnlineSub = Online::GetSubsystem(InWorld, FName(*Subsystem));
 	check(OnlineSub);

@@ -305,7 +305,7 @@ static bool OnlineExec( UWorld* InWorld, const TCHAR* Cmd, FOutputDevice& Ar )
 						bool bTestLAN = FParse::Command(&Cmd, TEXT("LAN")) ? true : false;
 						bool bTestPresence = FParse::Command(&Cmd, TEXT("PRESENCE")) ? true : false;
 
-						FOnlineSessionSettingsBeatZ SettingsOverride;
+						FOnlineSessionSettings SettingsOverride;
 
 						FString ParamOverride;
 						while (FParse::Token(Cmd, ParamOverride, false))
@@ -333,7 +333,7 @@ static bool OnlineExec( UWorld* InWorld, const TCHAR* Cmd, FOutputDevice& Ar )
 						bool bTestLAN = FParse::Command(&Cmd, TEXT("LAN")) ? true : false;
 						bool bTestPresence = FParse::Command(&Cmd, TEXT("PRESENCE")) ? true : false;
 
-						FOnlineSessionSettingsBeatZ SettingsOverride;
+						FOnlineSessionSettings SettingsOverride;
 
 						// This class deletes itself once done
 						(new FTestSessionInterface(SubName, false))->Test(InWorld, bTestLAN, bTestPresence, false, SettingsOverride);
@@ -341,7 +341,7 @@ static bool OnlineExec( UWorld* InWorld, const TCHAR* Cmd, FOutputDevice& Ar )
 					}
 					else if (FParse::Command(&Cmd, TEXT("STARTMATCHMAKING")))
 					{
-						FOnlineSessionSettingsBeatZ SettingsOverride;
+						FOnlineSessionSettings SettingsOverride;
 
 						FString ParamOverride;
 						while (FParse::Token(Cmd, ParamOverride, false))

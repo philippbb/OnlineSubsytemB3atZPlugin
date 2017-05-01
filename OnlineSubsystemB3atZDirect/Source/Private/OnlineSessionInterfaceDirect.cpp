@@ -182,7 +182,7 @@ public:
 	}
 };
 
-bool FOnlineSessionDirect::CreateSession(int32 HostingPlayerNum, FName SessionName, const FOnlineSessionSettingsBeatZ& NewSessionSettings)
+bool FOnlineSessionDirect::CreateSession(int32 HostingPlayerNum, FName SessionName, const FOnlineSessionSettings& NewSessionSettings)
 {
 	uint32 Result = E_FAIL;
 
@@ -255,7 +255,7 @@ bool FOnlineSessionDirect::CreateSession(int32 HostingPlayerNum, FName SessionNa
 	return Result == ERROR_IO_PENDING || Result == ERROR_SUCCESS;
 }
 
-bool FOnlineSessionDirect::CreateSession(const FUniqueNetId& HostingPlayerId, FName SessionName, const FOnlineSessionSettingsBeatZ& NewSessionSettings)
+bool FOnlineSessionDirect::CreateSession(const FUniqueNetId& HostingPlayerId, FName SessionName, const FOnlineSessionSettings& NewSessionSettings)
 {
 	// todo: use proper	HostingPlayerId
 	return CreateSession(0, SessionName, NewSessionSettings);
@@ -408,7 +408,7 @@ int32 FOnlineSessionDirect::GetPort()
 	return HostSessionPort;
 }
 
-bool FOnlineSessionDirect::UpdateSession(FName SessionName, FOnlineSessionSettingsBeatZ& UpdatedSessionSettings, bool bShouldRefreshOnlineData)
+bool FOnlineSessionDirect::UpdateSession(FName SessionName, FOnlineSessionSettings& UpdatedSessionSettings, bool bShouldRefreshOnlineData)
 {
 	bool bWasSuccessful = true;
 
@@ -501,7 +501,7 @@ bool FOnlineSessionDirect::IsPlayerInSession(FName SessionName, const FUniqueNet
 	return IsPlayerInSessionImpl(this, SessionName, UniqueId);
 }
 
-bool FOnlineSessionDirect::StartMatchmaking(const TArray< TSharedRef<const FUniqueNetId> >& LocalPlayers, FName SessionName, const FOnlineSessionSettingsBeatZ& NewSessionSettings, TSharedRef<FOnlineSessionSearchB3atZ>& SearchSettings)
+bool FOnlineSessionDirect::StartMatchmaking(const TArray< TSharedRef<const FUniqueNetId> >& LocalPlayers, FName SessionName, const FOnlineSessionSettings& NewSessionSettings, TSharedRef<FOnlineSessionSearchB3atZ>& SearchSettings)
 {
 	UE_LOG(LogB3atZOnline, Verbose, TEXT("StartMatchmaking is not supported on this platform. Use FindSessions or FindSessionById."));
 	TriggerOnMatchmakingCompleteDelegates(SessionName, false);
@@ -878,7 +878,7 @@ bool FOnlineSessionDirect::GetResolvedConnectString(const FOnlineSessionSearchRe
 	return bSuccess;
 }
 
-FOnlineSessionSettingsBeatZ* FOnlineSessionDirect::GetSessionSettings(FName SessionName) 
+FOnlineSessionSettings* FOnlineSessionDirect::GetSessionSettings(FName SessionName) 
 {
 	FNamedOnlineSession* Session = GetNamedSession(SessionName);
 	if (Session)
@@ -1073,7 +1073,7 @@ void FOnlineSessionDirect::AppendSessionToPacket(FNboSerializeToBufferDirect& Pa
 	AppendSessionSettingsToPacket(Packet, &Session->SessionSettings);
 }
 
-void FOnlineSessionDirect::AppendSessionSettingsToPacket(FNboSerializeToBufferDirect& Packet, FOnlineSessionSettingsBeatZ* SessionSettings)
+void FOnlineSessionDirect::AppendSessionSettingsToPacket(FNboSerializeToBufferDirect& Packet, FOnlineSessionSettings* SessionSettings)
 {
 #if DEBUG_LAN_BEACON
 	UE_LOG_ONLINEB3ATZ(Verbose, TEXT("Sending session settings to client"));
@@ -1141,7 +1141,7 @@ void FOnlineSessionDirect::OnValidQueryPacketReceived(uint8* PacketData, int32 P
 		{
 			UE_LOG(LogB3atZOnline, Verbose, TEXT("OSID OnValidQueryPacketReceived Session valid trough Session Index"));
 
-			const FOnlineSessionSettingsBeatZ& Settings = Session->SessionSettings;
+			const FOnlineSessionSettings& Settings = Session->SessionSettings;
 
 			const bool bIsMatchInProgress = Session->SessionState == EB3atZOnlineSessionState::InProgress;
 
@@ -1209,7 +1209,7 @@ void FOnlineSessionDirect::ReadSessionFromPacket(FNboSerializeFromBufferDirect& 
 	ReadSettingsFromPacket(Packet, Session->SessionSettings);
 }
 
-void FOnlineSessionDirect::ReadSettingsFromPacket(FNboSerializeFromBufferDirect& Packet, FOnlineSessionSettingsBeatZ& SessionSettings)
+void FOnlineSessionDirect::ReadSettingsFromPacket(FNboSerializeFromBufferDirect& Packet, FOnlineSessionSettings& SessionSettings)
 {
 #if DEBUG_LAN_BEACON
 	UE_LOG_ONLINEB3ATZ(Verbose, TEXT("Reading game settings from server"));
@@ -1285,7 +1285,7 @@ void FOnlineSessionDirect::OnValidResponsePacketReceived(uint8* PacketData, int3
 	UE_LOG_ONLINEB3ATZ(Verbose, TEXT("OSIDirect OnValidResponsePacketReceived"));
 
 	// Create an object that we'll copy the data to
-	FOnlineSessionSettingsBeatZ NewServer;
+	FOnlineSessionSettings NewServer;
 	if (CurrentSessionSearch.IsValid())
 	{
 		UE_LOG_ONLINEB3ATZ(Verbose, TEXT("OSIDirect OnValidResponsePacketReceived sessions search is valid"));

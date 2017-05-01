@@ -245,7 +245,7 @@ bool UB3atZOnlineEngineInterfaceImpl::DoesSessionExist(UWorld* World, FName Sess
 {
 	UE_LOG(LogInit, VeryVerbose, TEXT("OEII DoesSessionExist"));
 
-	FOnlineSessionSettingsBeatZ* SessionSettings = nullptr;
+	FOnlineSessionSettings* SessionSettings = nullptr;
 	IOnlineSessionPtr SessionInt = Online::GetSessionInterface(World);
 	if (SessionInt.IsValid())
 	{
@@ -264,7 +264,7 @@ bool UB3atZOnlineEngineInterfaceImpl::GetSessionJoinability(UWorld* World, FName
 	IOnlineSessionPtr SessionInt = Online::GetSessionInterface(World);
 	if (SessionInt.IsValid())
 	{
-		FOnlineSessionSettingsBeatZ* SessionSettings = SessionInt->GetSessionSettings(SessionName);
+		FOnlineSessionSettings* SessionSettings = SessionInt->GetSessionSettings(SessionName);
 		if (SessionSettings)
 		{
 			OutSettings.SessionName = SessionName;
@@ -286,7 +286,7 @@ void UB3atZOnlineEngineInterfaceImpl::UpdateSessionJoinability(UWorld* World, FN
 	IOnlineSessionPtr SessionInt = Online::GetSessionInterface(World);
 	if (SessionInt.IsValid())
 	{
-		FOnlineSessionSettingsBeatZ* SessionSettings = SessionInt->GetSessionSettings(SessionName);
+		FOnlineSessionSettings* SessionSettings = SessionInt->GetSessionSettings(SessionName);
 		if (SessionSettings != nullptr)
 		{
 			SessionSettings->bShouldAdvertise = bPublicSearchable;

@@ -10,7 +10,7 @@
 class FOnlineSession;
 class FOnlineSessionSearchB3atZ;
 class FOnlineSessionSearchResult;
-class FOnlineSessionSettingsBeatZ;
+class FOnlineSessionSettings;
 
 /**
  * Delegate fired when a session create request has completed
@@ -243,7 +243,7 @@ protected:
 	 *
 	 * @return a pointer to the struct that was added
 	 */
-	virtual class FNamedOnlineSession* AddNamedSession(FName SessionName, const FOnlineSessionSettingsBeatZ& SessionSettings) = 0;
+	virtual class FNamedOnlineSession* AddNamedSession(FName SessionName, const FOnlineSessionSettings& SessionSettings) = 0;
 
 	/**
 	 * Adds a new named session to the list (from existing session data)
@@ -299,7 +299,7 @@ public:
 	 *
 	 * @return true if successful creating the session, false otherwise
 	 */
-	virtual bool CreateSession(int32 HostingPlayerNum, FName SessionName, const FOnlineSessionSettingsBeatZ& NewSessionSettings) = 0;
+	virtual bool CreateSession(int32 HostingPlayerNum, FName SessionName, const FOnlineSessionSettings& NewSessionSettings) = 0;
 
 	/**
 	 * Creates an online session based upon the settings object specified.
@@ -312,7 +312,7 @@ public:
 	 *
 	 * @return true if successful creating the session, false otherwise
 	 */
-	virtual bool CreateSession(const FUniqueNetId& HostingPlayerId, FName SessionName, const FOnlineSessionSettingsBeatZ& NewSessionSettings) = 0;
+	virtual bool CreateSession(const FUniqueNetId& HostingPlayerId, FName SessionName, const FOnlineSessionSettings& NewSessionSettings) = 0;
 
 	/**
 	* Delegate fired when a session create request has completed
@@ -350,7 +350,7 @@ public:
 	 *
 	 * @return true if successful creating the session, false otherwise
 	 */
-	virtual bool UpdateSession(FName SessionName, FOnlineSessionSettingsBeatZ& UpdatedSessionSettings, bool bShouldRefreshOnlineData = true) = 0;
+	virtual bool UpdateSession(FName SessionName, FOnlineSessionSettings& UpdatedSessionSettings, bool bShouldRefreshOnlineData = true) = 0;
 
 	/**
 	 * Delegate fired when a update request has completed
@@ -414,7 +414,7 @@ public:
 	 *
 	 * @return true if successful searching for sessions, false otherwise
 	 */
-	virtual bool StartMatchmaking(const TArray< TSharedRef<const FUniqueNetId> >& LocalPlayers, FName SessionName, const FOnlineSessionSettingsBeatZ& NewSessionSettings, TSharedRef<FOnlineSessionSearchB3atZ>& SearchSettings) = 0;
+	virtual bool StartMatchmaking(const TArray< TSharedRef<const FUniqueNetId> >& LocalPlayers, FName SessionName, const FOnlineSessionSettings& NewSessionSettings, TSharedRef<FOnlineSessionSearchB3atZ>& SearchSettings) = 0;
 	
 	/**
 	 * Delegate fired when the cloud matchmaking has completed
@@ -675,7 +675,7 @@ public:
 	 *
 	 * @return the settings for this session name
 	 */
-	virtual FOnlineSessionSettingsBeatZ* GetSessionSettings(FName SessionName) = 0;
+	virtual FOnlineSessionSettings* GetSessionSettings(FName SessionName) = 0;
 
 	/**
 	 * Registers a player with the online service as being part of the online session

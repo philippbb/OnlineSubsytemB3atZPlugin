@@ -332,7 +332,7 @@ void UDirectOnlineSessionClient::SetInviteFlags(UWorld* World, const FJoinabilit
 	IOnlineSessionPtr SessionInt = Online::GetSessionInterface(World);
 	if (SessionInt.IsValid())
 	{
-		FOnlineSessionSettingsBeatZ* GameSettings = SessionInt->GetSessionSettings(Settings.SessionName);
+		FOnlineSessionSettings* GameSettings = SessionInt->GetSessionSettings(Settings.SessionName);
 		if (GameSettings != NULL)
 		{
 			GameSettings->bShouldAdvertise = Settings.bPublicSearchable;

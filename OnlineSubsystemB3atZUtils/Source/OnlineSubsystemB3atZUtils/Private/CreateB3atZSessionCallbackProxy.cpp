@@ -47,7 +47,7 @@ void UCreateB3atZSessionCallbackProxy::Activate()
 		{
 			CreateCompleteDelegateHandle = Sessions->AddOnCreateSessionCompleteDelegate_Handle(CreateCompleteDelegate);
 
-			FOnlineSessionSettingsBeatZ Settings;
+			FOnlineSessionSettings Settings;
 			Settings.NumPublicConnections = NumPublicConnections;
 			Settings.bShouldAdvertise = true;
 			Settings.bAllowJoinInProgress = true;

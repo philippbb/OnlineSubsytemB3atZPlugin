@@ -246,7 +246,7 @@ public:
 /**
  *	Container for all settings describing a single online session
  */
-class ONLINESUBSYSTEMB3ATZ_API FOnlineSessionSettingsBeatZ
+class ONLINESUBSYSTEMB3ATZ_API FOnlineSessionSettings
 {
 
 public:
@@ -284,7 +284,7 @@ public:
 
 
 	/** Default constructor, used when serializing a network packet */
-	FOnlineSessionSettingsBeatZ() :
+	FOnlineSessionSettings() :
 		NumPublicConnections(0),
 		NumPrivateConnections(0),
 		bShouldAdvertise(false),
@@ -305,7 +305,7 @@ public:
 // 		Set(SETTING_GAMEMODE, FString(TEXT("")), EB3atZOnlineDataAdvertisementType::ViaOnlineService);
 	}
 
-	virtual ~FOnlineSessionSettingsBeatZ() {}
+	virtual ~FOnlineSessionSettings() {}
 
 	/**
 	 *	Sets a key value pair combination that defines a session setting with an ID
@@ -388,7 +388,7 @@ public:
 	/** Owner name of the session */
 	FString OwningUserName;
 	/** The settings associated with this session */
-	FOnlineSessionSettingsBeatZ SessionSettings;
+	FOnlineSessionSettings SessionSettings;
 	/** The platform specific session information */
 	TSharedPtr<class FOnlineSessionInfoB3atZ> SessionInfo;
 	/** The number of private connections that are available (read only) */
@@ -406,7 +406,7 @@ public:
 	}
 
 	/** Constructor */
-	FOnlineSession(const FOnlineSessionSettingsBeatZ& InSessionSettings) :
+	FOnlineSession(const FOnlineSessionSettings& InSessionSettings) :
 		OwningUserId(NULL),
 		SessionSettings(InSessionSettings),
 		SessionInfo(NULL),
@@ -458,7 +458,7 @@ public:
 	EB3atZOnlineSessionState::Type SessionState;
 
 	/** Constructor used to create a named session directly */
-	FNamedOnlineSession(FName InSessionName, const FOnlineSessionSettingsBeatZ& InSessionSettings) :
+	FNamedOnlineSession(FName InSessionName, const FOnlineSessionSettings& InSessionSettings) :
 		FOnlineSession(InSessionSettings),
 		SessionName(InSessionName),
 		HostingPlayerNum(INDEX_NONE),
@@ -647,9 +647,9 @@ public:
 	 * Allows games to set reasonable defaults that aren't advertised
 	 * but would be setup for each instantiated search result
 	 */
-	virtual TSharedPtr<FOnlineSessionSettingsBeatZ> GetDefaultSessionSettings() const 
+	virtual TSharedPtr<FOnlineSessionSettings> GetDefaultSessionSettings() const 
 	{ 
-		return MakeShareable(new FOnlineSessionSettingsBeatZ()); 
+		return MakeShareable(new FOnlineSessionSettings()); 
 	}
 };
 
@@ -672,7 +672,7 @@ void ONLINESUBSYSTEMB3ATZ_API DumpSession(const FOnlineSession* Session);
  *
  * @param SessionSettings the session to log the information for
  */
-void ONLINESUBSYSTEMB3ATZ_API DumpSessionSettings(const FOnlineSessionSettingsBeatZ* SessionSettings);
+void ONLINESUBSYSTEMB3ATZ_API DumpSessionSettings(const FOnlineSessionSettings* SessionSettings);
 
 
 

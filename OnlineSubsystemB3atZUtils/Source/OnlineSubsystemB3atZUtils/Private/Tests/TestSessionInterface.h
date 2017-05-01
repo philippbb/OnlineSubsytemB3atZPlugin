@@ -332,7 +332,7 @@ class TestOnlineSearchSettings;
 	 *z
 	 * @param bTestLAN setup settings for LAN test
 	 */
-	void Test(UWorld* InWorld, bool bTestLAN, bool bIsPresence, bool bIsMatchmaking, const FOnlineSessionSettingsBeatZ& SettingsOverride);
+	void Test(UWorld* InWorld, bool bTestLAN, bool bIsPresence, bool bIsMatchmaking, const FOnlineSessionSettings& SettingsOverride);
 
 	/**
 	 * Clear out any existing delegates created

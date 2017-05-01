@@ -42,7 +42,7 @@ void DumpSession(const FOnlineSession* Session)
 	}
 }
 
-void DumpSessionSettings(const FOnlineSessionSettingsBeatZ* SessionSettings)
+void DumpSessionSettings(const FOnlineSessionSettings* SessionSettings)
 {
 	if (SessionSettings != NULL)
 	{
@@ -70,7 +70,7 @@ void DumpSessionSettings(const FOnlineSessionSettingsBeatZ* SessionSettings)
 }
 
 template<typename ValueType>
-void FOnlineSessionSettingsBeatZ::Set(FName Key, const ValueType& Value, EB3atZOnlineDataAdvertisementType::Type InType, int32 InID)
+void FOnlineSessionSettings::Set(FName Key, const ValueType& Value, EB3atZOnlineDataAdvertisementType::Type InType, int32 InID)
 {
 	FOnlineSessionSetting* Setting = Settings.Find(Key);
 	if (Setting)
@@ -87,17 +87,17 @@ void FOnlineSessionSettingsBeatZ::Set(FName Key, const ValueType& Value, EB3atZO
 
 /** Explicit instantiation of supported types to Set template above */
 #if !UE_BUILD_DOCS
-template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettingsBeatZ::Set(FName Key, const int32& Value, EB3atZOnlineDataAdvertisementType::Type InType, int32 InID);
-template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettingsBeatZ::Set(FName Key, const float& Value, EB3atZOnlineDataAdvertisementType::Type InType, int32 InID);
-template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettingsBeatZ::Set(FName Key, const uint64& Value, EB3atZOnlineDataAdvertisementType::Type InType, int32 InID);
-template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettingsBeatZ::Set(FName Key, const double& Value, EB3atZOnlineDataAdvertisementType::Type InType, int32 InID);
-template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettingsBeatZ::Set(FName Key, const FString& Value, EB3atZOnlineDataAdvertisementType::Type InType, int32 InID);
-template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettingsBeatZ::Set(FName Key, const bool& Value, EB3atZOnlineDataAdvertisementType::Type InType, int32 InID);
-template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettingsBeatZ::Set(FName Key, const TArray<uint8>& Value, EB3atZOnlineDataAdvertisementType::Type InType, int32 InID);
+template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettings::Set(FName Key, const int32& Value, EB3atZOnlineDataAdvertisementType::Type InType, int32 InID);
+template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettings::Set(FName Key, const float& Value, EB3atZOnlineDataAdvertisementType::Type InType, int32 InID);
+template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettings::Set(FName Key, const uint64& Value, EB3atZOnlineDataAdvertisementType::Type InType, int32 InID);
+template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettings::Set(FName Key, const double& Value, EB3atZOnlineDataAdvertisementType::Type InType, int32 InID);
+template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettings::Set(FName Key, const FString& Value, EB3atZOnlineDataAdvertisementType::Type InType, int32 InID);
+template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettings::Set(FName Key, const bool& Value, EB3atZOnlineDataAdvertisementType::Type InType, int32 InID);
+template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettings::Set(FName Key, const TArray<uint8>& Value, EB3atZOnlineDataAdvertisementType::Type InType, int32 InID);
 #endif
 
 template<typename ValueType> 
-void FOnlineSessionSettingsBeatZ::Set(FName Key, const ValueType& Value, EB3atZOnlineDataAdvertisementType::Type InType)
+void FOnlineSessionSettings::Set(FName Key, const ValueType& Value, EB3atZOnlineDataAdvertisementType::Type InType)
 {
 	FOnlineSessionSetting* Setting = Settings.Find(Key);
 	if (Setting)
@@ -113,16 +113,16 @@ void FOnlineSessionSettingsBeatZ::Set(FName Key, const ValueType& Value, EB3atZO
 
 /** Explicit instantiation of supported types to Set template above */
 #if !UE_BUILD_DOCS
-template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettingsBeatZ::Set(FName Key, const int32& Value, EB3atZOnlineDataAdvertisementType::Type InType);
-template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettingsBeatZ::Set(FName Key, const float& Value, EB3atZOnlineDataAdvertisementType::Type InType);
-template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettingsBeatZ::Set(FName Key, const uint64& Value, EB3atZOnlineDataAdvertisementType::Type InType);
-template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettingsBeatZ::Set(FName Key, const double& Value, EB3atZOnlineDataAdvertisementType::Type InType);
-template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettingsBeatZ::Set(FName Key, const FString& Value, EB3atZOnlineDataAdvertisementType::Type InType);
-template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettingsBeatZ::Set(FName Key, const bool& Value, EB3atZOnlineDataAdvertisementType::Type InType);
-template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettingsBeatZ::Set(FName Key, const TArray<uint8>& Value, EB3atZOnlineDataAdvertisementType::Type InType);
+template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettings::Set(FName Key, const int32& Value, EB3atZOnlineDataAdvertisementType::Type InType);
+template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettings::Set(FName Key, const float& Value, EB3atZOnlineDataAdvertisementType::Type InType);
+template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettings::Set(FName Key, const uint64& Value, EB3atZOnlineDataAdvertisementType::Type InType);
+template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettings::Set(FName Key, const double& Value, EB3atZOnlineDataAdvertisementType::Type InType);
+template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettings::Set(FName Key, const FString& Value, EB3atZOnlineDataAdvertisementType::Type InType);
+template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettings::Set(FName Key, const bool& Value, EB3atZOnlineDataAdvertisementType::Type InType);
+template ONLINESUBSYSTEMB3ATZ_API void FOnlineSessionSettings::Set(FName Key, const TArray<uint8>& Value, EB3atZOnlineDataAdvertisementType::Type InType);
 #endif
 
-void FOnlineSessionSettingsBeatZ::Set(FName Key, const FOnlineSessionSetting& SrcSetting)
+void FOnlineSessionSettings::Set(FName Key, const FOnlineSessionSetting& SrcSetting)
 {
 	FOnlineSessionSetting* Setting = Settings.Find(Key);
 	if (Setting)
@@ -137,7 +137,7 @@ void FOnlineSessionSettingsBeatZ::Set(FName Key, const FOnlineSessionSetting& Sr
 }
 
 template<typename ValueType> 
-bool FOnlineSessionSettingsBeatZ::Get(FName Key, ValueType& Value) const
+bool FOnlineSessionSettings::Get(FName Key, ValueType& Value) const
 {
 	const FOnlineSessionSetting* Setting = Settings.Find(Key);
 	if (Setting)
@@ -150,20 +150,20 @@ bool FOnlineSessionSettingsBeatZ::Get(FName Key, ValueType& Value) const
 }
 
 /** Explicit instantiation of supported types to Get template above */
-template ONLINESUBSYSTEMB3ATZ_API bool FOnlineSessionSettingsBeatZ::Get(FName Key, int32& Value) const;
-template ONLINESUBSYSTEMB3ATZ_API bool FOnlineSessionSettingsBeatZ::Get(FName Key, float& Value) const;
-template ONLINESUBSYSTEMB3ATZ_API bool FOnlineSessionSettingsBeatZ::Get(FName Key, uint64& Value) const;
-template ONLINESUBSYSTEMB3ATZ_API bool FOnlineSessionSettingsBeatZ::Get(FName Key, double& Value) const;
-template ONLINESUBSYSTEMB3ATZ_API bool FOnlineSessionSettingsBeatZ::Get(FName Key, bool& Value) const;
-template ONLINESUBSYSTEMB3ATZ_API bool FOnlineSessionSettingsBeatZ::Get(FName Key, FString& Value) const;
-template ONLINESUBSYSTEMB3ATZ_API bool FOnlineSessionSettingsBeatZ::Get(FName Key, TArray<uint8>& Value) const;
+template ONLINESUBSYSTEMB3ATZ_API bool FOnlineSessionSettings::Get(FName Key, int32& Value) const;
+template ONLINESUBSYSTEMB3ATZ_API bool FOnlineSessionSettings::Get(FName Key, float& Value) const;
+template ONLINESUBSYSTEMB3ATZ_API bool FOnlineSessionSettings::Get(FName Key, uint64& Value) const;
+template ONLINESUBSYSTEMB3ATZ_API bool FOnlineSessionSettings::Get(FName Key, double& Value) const;
+template ONLINESUBSYSTEMB3ATZ_API bool FOnlineSessionSettings::Get(FName Key, bool& Value) const;
+template ONLINESUBSYSTEMB3ATZ_API bool FOnlineSessionSettings::Get(FName Key, FString& Value) const;
+template ONLINESUBSYSTEMB3ATZ_API bool FOnlineSessionSettings::Get(FName Key, TArray<uint8>& Value) const;
 
-bool FOnlineSessionSettingsBeatZ::Remove(FName Key)
+bool FOnlineSessionSettings::Remove(FName Key)
 {
 	return Settings.Remove(Key) > 0;
 }
 
-EB3atZOnlineDataAdvertisementType::Type FOnlineSessionSettingsBeatZ::GetAdvertisementType(FName Key) const
+EB3atZOnlineDataAdvertisementType::Type FOnlineSessionSettings::GetAdvertisementType(FName Key) const
 {
 	const FOnlineSessionSetting* Setting = Settings.Find(Key);
 	if (Setting)
@@ -175,7 +175,7 @@ EB3atZOnlineDataAdvertisementType::Type FOnlineSessionSettingsBeatZ::GetAdvertis
 	return EB3atZOnlineDataAdvertisementType::DontAdvertise;
 }
 
-int32 FOnlineSessionSettingsBeatZ::GetID(FName Key) const
+int32 FOnlineSessionSettings::GetID(FName Key) const
 {
 	const FOnlineSessionSetting* Setting = Settings.Find(Key);
 	if (Setting)
