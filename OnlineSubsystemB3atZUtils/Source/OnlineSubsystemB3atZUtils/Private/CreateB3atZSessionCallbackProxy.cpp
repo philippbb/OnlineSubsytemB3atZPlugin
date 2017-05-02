@@ -1,4 +1,5 @@
-// Copyright 1998-2017 Epic Games, Inc. All Rights Reserved.
+// Copyright 1998-2017 Epic Games, Inc. All Rights Reserved
+// Plugin written by Philipp Buerki. Copyright 2017. All Rights reserved..
 // Code for getting external IP addr from Ue4 community member Rama
 
 #include "CreateB3atZSessionCallbackProxy.h"

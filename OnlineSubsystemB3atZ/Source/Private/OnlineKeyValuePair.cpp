@@ -1,4 +1,5 @@
-// Copyright 1998-2017 Epic Games, Inc. All Rights Reserved.
+// Copyright 1998-2017 Epic Games, Inc. All Rights Reserved
+// Plugin written by Philipp Buerki. Copyright 2017. All Rights reserved..
 
 #include "OnlineKeyValuePair.h"
 #include "Serialization/JsonTypes.h"
