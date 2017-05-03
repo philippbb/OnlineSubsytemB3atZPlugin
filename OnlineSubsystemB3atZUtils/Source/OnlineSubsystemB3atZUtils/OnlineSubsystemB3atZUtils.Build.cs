@@ -5,8 +5,8 @@ using UnrealBuildTool;
 
 public class OnlineSubsystemB3atZUtils : ModuleRules
 {
-	public OnlineSubsystemB3atZUtils(TargetInfo Target)
-	{
+	public OnlineSubsystemB3atZUtils(ReadOnlyTargetRules Target) : base(Target)
+    {
 		Definitions.Add("ONLINESUBSYSTEMB3ATZUTILS_PACKAGE=1");
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 

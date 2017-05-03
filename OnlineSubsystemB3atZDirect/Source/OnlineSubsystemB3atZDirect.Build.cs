@@ -6,8 +6,8 @@ using System.IO;
 
 public class OnlineSubsystemB3atZDirect : ModuleRules
 {
-	public OnlineSubsystemB3atZDirect(TargetInfo Target)
-	{
+	public OnlineSubsystemB3atZDirect(ReadOnlyTargetRules Target) : base(Target)
+    {
 		Definitions.Add("ONLINESUBSYSTEMDIRECT_PACKAGE=1");
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 
