@@ -63,13 +63,13 @@ void UIpConnectionB3atZ::InitLocalConnection(UNetDriver* InDriver, class FSocket
 	// Try to resolve it if it failed
 	if (bIsValid == false)
 	{
-		UE_LOG(LogNet, Warning, TEXT("IPConnection InitLocalConnection not valid, trying to resolve"));
+		UE_LOG(LogNet, Verbose, TEXT("IPConnection InitLocalConnection not valid, trying to resolve"));
 		// Create thread to resolve the address.
 		ResolveInfo = InDriver->GetSocketSubsystem()->GetHostByName(TCHAR_TO_ANSI(*InURL.Host));
 		if (ResolveInfo == NULL)
 		{
 			Close();
-			UE_LOG(LogNet, Warning, TEXT("IpConnection::InitConnection: Unable to resolve %s"), *InURL.Host);
+			UE_LOG(LogNet, Verbose, TEXT("IpConnection::InitConnection: Unable to resolve %s"), *InURL.Host);
 		}
 	}
 
@@ -79,7 +79,7 @@ void UIpConnectionB3atZ::InitLocalConnection(UNetDriver* InDriver, class FSocket
 
 void UIpConnectionB3atZ::InitRemoteConnection(UNetDriver* InDriver, class FSocket* InSocket, const FURL& InURL, const class FInternetAddr& InRemoteAddr, EConnectionState InState, int32 InMaxPacket, int32 InPacketOverhead)
 {
-	UE_LOG(LogNet, Warning, TEXT("IPConnection InitRemoteConnection inURL is %s with Port %u"), *InURL.ToString(), InURL.Port);
+	UE_LOG(LogNet, Verbose, TEXT("IPConnection InitRemoteConnection inURL is %s with Port %u"), *InURL.ToString(), InURL.Port);
 
 	InitBase(InDriver, InSocket, InURL, InState, 
 		// Use the default packet size/overhead unless overridden by a child class
@@ -105,17 +105,17 @@ void UIpConnectionB3atZ::InitRemoteConnection(UNetDriver* InDriver, class FSocke
 
 void UIpConnectionB3atZ::LowLevelSend(void* Data, int32 CountBytes, int32 CountBits)
 {
-	UE_LOG(LogNet, Warning, TEXT("IPConnection LowLevelSend"));
+	UE_LOG(LogNet, VeryVerbose, TEXT("IPConnection LowLevelSend"));
 
 	const uint8* DataToSend = reinterpret_cast<uint8*>(Data);
 
 	if( ResolveInfo )
 	{
-		UE_LOG(LogNet, Warning, TEXT("IPConnection LowLevelSend ResolveInfo valid"));
+		UE_LOG(LogNet, VeryVerbose, TEXT("IPConnection LowLevelSend ResolveInfo valid"));
 		// If destination address isn't resolved yet, send nowhere.
 		if( !ResolveInfo->IsComplete() )
 		{
-			UE_LOG(LogNet, Warning, TEXT("IPConnection LowLevelSend ResolveInfo not complete"));
+			UE_LOG(LogNet, VeryVerbose, TEXT("IPConnection LowLevelSend ResolveInfo not complete"));
 			// Host name still resolving.
 			return;
 		}
@@ -134,7 +134,7 @@ void UIpConnectionB3atZ::LowLevelSend(void* Data, int32 CountBytes, int32 CountB
 			// Host name resolution just now succeeded.
 			ResolveInfo->GetResolvedAddress().GetIp(Addr);
 			RemoteAddr->SetIp(Addr);
-			UE_LOG(LogNet, Warning, TEXT("IPConnection LowLevelSend Host name resolution completed with remoteaddr set to %u"), Addr);
+			UE_LOG(LogNet, VeryVerbose, TEXT("IPConnection LowLevelSend Host name resolution completed with remoteaddr set to %u"), Addr);
 			delete ResolveInfo;
 			ResolveInfo = NULL;
 		}
@@ -170,7 +170,7 @@ void UIpConnectionB3atZ::LowLevelSend(void* Data, int32 CountBytes, int32 CountB
 
 	if (CountBytes > 0)
 	{
-		UE_LOG(LogNet, Warning, TEXT("IPConnection LowLevelSend CountBytes > 0 sending now on active socket with sendto"));
+		//UE_LOG(LogNet, Warning, TEXT("IPConnection LowLevelSend CountBytes > 0 sending now on active socket with sendto"));
 		Socket->SendTo(DataToSend, CountBytes, BytesSent, *RemoteAddr);
 	}
 

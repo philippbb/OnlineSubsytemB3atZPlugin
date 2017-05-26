@@ -43,7 +43,7 @@ namespace Online
 	 * @param SubsystemName - Name of the requested online service
 	 * @return Interface pointer for the appropriate party service
 	 */
-	//IMPLEMENT_GET_INTERFACE(Party);
+	//IMPLEMENT_GET_INTERFACE(B3atZParty);
 
 	/**
 	 * Get the interface for accessing the chat services
