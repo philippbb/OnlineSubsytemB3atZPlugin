@@ -37,36 +37,54 @@ UCreateB3atZSessionCallbackProxy* UCreateB3atZSessionCallbackProxy::CreateB3atZS
 
 void UCreateB3atZSessionCallbackProxy::Activate()
 {
-	
-	FOnlineSubsystemBPCallHelper Helper(TEXT("CreateSession"), GEngine->GetWorldFromContextObject(WorldContextObject));
-	Helper.QueryIDFromPlayerController(PlayerControllerWeakPtr.Get());
-
-	if (Helper.IsValid())
+	if (GetWorld()->GetNetMode() == NM_DedicatedServer)
 	{
-		auto Sessions = Helper.OnlineSub->GetSessionInterface();
-		if (Sessions.IsValid())
+		UWorld* World = GetWorld();
+		IOnlineSessionPtr SessionInt = Online::GetSessionInterface(World);
+
+		FOnlineSessionSettings Settings;
+		Settings.NumPublicConnections = NumPublicConnections;
+		Settings.bShouldAdvertise = true;
+		Settings.bAllowJoinInProgress = true;
+		Settings.bIsLANMatch = true;
+		Settings.bUsesPresence = true;
+		Settings.bAllowJoinViaPresence = false;
+
+		SessionInt->CreateSession(0, GameSessionName, Settings);
+		return;
+	}
+	else
+	{
+		FOnlineSubsystemBPCallHelper Helper(TEXT("CreateSession"), GEngine->GetWorldFromContextObject(WorldContextObject));
+		Helper.QueryIDFromPlayerController(PlayerControllerWeakPtr.Get());
+
+		if (Helper.IsValid())
 		{
-			CreateCompleteDelegateHandle = Sessions->AddOnCreateSessionCompleteDelegate_Handle(CreateCompleteDelegate);
+			auto Sessions = Helper.OnlineSub->GetSessionInterface();
+			if (Sessions.IsValid())
+			{
+				CreateCompleteDelegateHandle = Sessions->AddOnCreateSessionCompleteDelegate_Handle(CreateCompleteDelegate);
 
-			FOnlineSessionSettings Settings;
-			Settings.NumPublicConnections = NumPublicConnections;
-			Settings.bShouldAdvertise = true;
-			Settings.bAllowJoinInProgress = true;
-			Settings.bIsLANMatch = bUseLAN;
-			Settings.bUsesPresence = true;
-			Settings.bAllowJoinViaPresence = false;
+				FOnlineSessionSettings Settings;
+				Settings.NumPublicConnections = NumPublicConnections;
+				Settings.bShouldAdvertise = true;
+				Settings.bAllowJoinInProgress = true;
+				Settings.bIsLANMatch = bUseLAN;
+				Settings.bUsesPresence = true;
+				Settings.bAllowJoinViaPresence = false;
 
-			Sessions->CreateSession(*Helper.UserID, GameSessionName, Settings);
+				Sessions->CreateSession(*Helper.UserID, GameSessionName, Settings);
 
-			// OnCreateCompleted will get called, nothing more to do now
-			return;
-		}
-		else
-		{
-			FFrame::KismetExecutionMessage(TEXT("Sessions not supported by Online Subsystem"), ELogVerbosity::Warning);
+				// OnCreateCompleted will get called, nothing more to do now
+				return;
+			}
+			else
+			{
+				FFrame::KismetExecutionMessage(TEXT("Sessions not supported by Online Subsystem"), ELogVerbosity::Warning);
+			}
 		}
 	}
-
+	UE_LOG(LogB3atZOnline, VeryVerbose, TEXT("OSBU OSBPCallHelper not valid"));
 	// Fail immediately
 	OnFailure.Broadcast(SessionIP, SessionHostPort);
 }
