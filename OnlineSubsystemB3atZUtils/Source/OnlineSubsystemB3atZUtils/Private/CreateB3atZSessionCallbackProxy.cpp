@@ -42,16 +42,23 @@ void UCreateB3atZSessionCallbackProxy::Activate()
 		UWorld* World = GetWorld();
 		IOnlineSessionPtr SessionInt = Online::GetSessionInterface(World);
 
-		FOnlineSessionSettings Settings;
-		Settings.NumPublicConnections = NumPublicConnections;
-		Settings.bShouldAdvertise = true;
-		Settings.bAllowJoinInProgress = true;
-		Settings.bIsLANMatch = true;
-		Settings.bUsesPresence = true;
-		Settings.bAllowJoinViaPresence = false;
+		if (SessionInt)
+		{
+			FOnlineSessionSettings Settings;
+			Settings.NumPublicConnections = NumPublicConnections;
+			Settings.bShouldAdvertise = true;
+			Settings.bAllowJoinInProgress = true;
+			Settings.bIsLANMatch = bUseLAN;
+			Settings.bUsesPresence = true;
+			Settings.bAllowJoinViaPresence = false;
 
-		SessionInt->CreateSession(0, GameSessionName, Settings);
-		return;
+			SessionInt->CreateSession(0, GameSessionName, Settings);
+			return;
+		}
+		else
+		{
+			FFrame::KismetExecutionMessage(TEXT("Sessions not supported by Online Subsystem"), ELogVerbosity::Warning);
+		}
 	}
 	else
 	{
