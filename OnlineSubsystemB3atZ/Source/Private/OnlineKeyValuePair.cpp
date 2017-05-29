@@ -1148,7 +1148,7 @@ bool FVariantDataConverter::ConvertScalarUPropertyToVariant(UProperty* Property,
 	{
 		// export enums as strings
 		UEnum* EnumDef = EnumProperty->GetEnum();
-		FString StringValue = EnumDef->GetEnumName(EnumProperty->GetUnderlyingProperty()->GetSignedIntPropertyValue(Value));
+		FString StringValue = EnumDef->GetNameStringByIndex(EnumProperty->GetUnderlyingProperty()->GetSignedIntPropertyValue(Value));
 		OutVariantData.SetValue(StringValue);
 	}
 	else if (UNumericProperty *NumericProperty = Cast<UNumericProperty>(Property))
@@ -1158,7 +1158,7 @@ bool FVariantDataConverter::ConvertScalarUPropertyToVariant(UProperty* Property,
 		if (EnumDef != NULL)
 		{
 			// export enums as strings
-			FString StringValue = EnumDef->GetEnumName(NumericProperty->GetSignedIntPropertyValue(Value));
+			FString StringValue = EnumDef->GetNameStringByIndex(NumericProperty->GetSignedIntPropertyValue(Value));
 			OutVariantData.SetValue(StringValue);
 		}
 		// We want to export numbers as numbers
