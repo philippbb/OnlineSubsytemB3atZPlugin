@@ -7,6 +7,7 @@
 #include "Net/OnlineBlueprintCallProxyBase.h"
 #include "Interfaces/OnlineSessionInterfaceB3atZ.h"
 #include "Runtime/Online/HTTP/Public/Http.h"
+
 #include "CreateB3atZSessionCallbackProxy.generated.h"
 
 class APlayerController;
@@ -26,9 +27,18 @@ class UCreateB3atZSessionCallbackProxy : public UOnlineBlueprintCallProxyBase
 	UPROPERTY(BlueprintAssignable)
 	FBlueprintCreateSessionResultDelegate OnFailure;
 
-	// Creates a session with the B3atZ online subsystem
-	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly = "true", WorldContext="WorldContextObject"), Category = "Online|Session")
-	static UCreateB3atZSessionCallbackProxy* CreateB3atZSession(UObject* WorldContextObject, class APlayerController* PlayerController, int32 PublicConnections, bool bUseLAN);
+	/**
+	 * Creates a session with the B3atZ Online Subsystem.
+	 *
+	 * @param	WorldContextObject	WorldContextObject
+	 * @param	PlayerController	PlayerController which should create the session
+	 * @param	PublicConnections	How many PublicConnections to allow
+	 * @param	bUseLAN				Should the session be created over LAN or Online
+	 * @param	CustomAddr			If left empty, http://api.ipify.org will be contacted to get the external IP of this device to connect to. Specifiy custom url for custom service here.
+	 * @return	Proxy				Proxy
+	 */
+	UFUNCTION(BlueprintCallable, meta=(BlueprintInternalUseOnly = "true", AdvancedDisplay = "4", WorldContext="WorldContextObject"), Category = "Online|Session")
+	static UCreateB3atZSessionCallbackProxy* CreateB3atZSession(UObject* WorldContextObject, class APlayerController* PlayerController, int32 PublicConnections, bool bUseLAN, FString CustomAddr = FString(TEXT("http://api.ipify.org")));
 
 	// UOnlineBlueprintCallProxyBase interface
 	virtual void Activate() override;
@@ -41,6 +51,7 @@ class UCreateB3atZSessionCallbackProxy : public UOnlineBlueprintCallProxyBase
 
 	UFUNCTION(BlueprintCallable, Category = "Utilities|Platform")
 		bool GetMyIP_SendRequest();
+
 
 	void HTTPOnResponseReceived(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessfull);
 
@@ -81,8 +92,11 @@ private:
 	// Number of public connections
 	int NumPublicConnections;
 
-	// Whether or not to search LAN
+	UPROPERTY(EditAnywhere, Category = PlayerMusicSkill, meta = (ToolTip = "What is the Player's current musical skill level?"))
 	bool bUseLAN;
+
+	//Custom Adress for getting external IP
+	FString CustomAddr;
 
 	//Session IP Return Value for Blueprint
 	FString SessionIP;
