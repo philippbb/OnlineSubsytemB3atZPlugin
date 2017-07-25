@@ -38,7 +38,9 @@ UCreateB3atZSessionCallbackProxy* UCreateB3atZSessionCallbackProxy::CreateB3atZS
 
 void UCreateB3atZSessionCallbackProxy::Activate()
 {
-	if (GetWorld()->GetNetMode() == NM_DedicatedServer)
+	UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject);
+	
+	if (World && World->GetNetMode() == NM_DedicatedServer)
 	{
 		UWorld* World = GetWorld();
 		IOnlineSessionPtr SessionInt = Online::GetSessionInterface(World);
@@ -61,7 +63,7 @@ void UCreateB3atZSessionCallbackProxy::Activate()
 			FFrame::KismetExecutionMessage(TEXT("Sessions not supported by Online Subsystem"), ELogVerbosity::Warning);
 		}
 	}
-	else
+	else if(World)
 	{
 		FOnlineSubsystemBPCallHelper Helper(TEXT("CreateSession"), GEngine->GetWorldFromContextObject(WorldContextObject));
 		Helper.QueryIDFromPlayerController(PlayerControllerWeakPtr.Get());
@@ -102,7 +104,8 @@ void UCreateB3atZSessionCallbackProxy::OnCreateCompleted(FName SessionName, bool
 {
 	IOnlineSessionPtr Sessions;
 
-	if (GetWorld()->GetNetMode() == NM_DedicatedServer)
+	UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject);
+	if (World && World->GetNetMode() == NM_DedicatedServer)
 	{
 		IOnlineSubsystemB3atZ* const OnlineSub = IOnlineSubsystemB3atZ::Get();
 		if (OnlineSub)
@@ -148,7 +151,9 @@ void UCreateB3atZSessionCallbackProxy::OnStartCompleted(FName SessionName, bool 
 {
 	IOnlineSessionPtr Sessions;
 
-	if (GetWorld()->GetNetMode() == NM_DedicatedServer)
+	UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject);
+	
+	if (World && World->GetNetMode() == NM_DedicatedServer)
 	{
 		IOnlineSubsystemB3atZ* const OnlineSub = IOnlineSubsystemB3atZ::Get();
 		if (OnlineSub)
